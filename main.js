@@ -112,11 +112,18 @@ for (i = 0; i < orders.length; i++) {
             if(weightParcel <30){
                 // if yes we push the new item to the parcels' items' list
                 parcels[parcels.length-1].weight += orders[i].items[j].item_weight
-                const newItem = {
-                    item_id : orders[i].items[j].item_weight,
-                    item_weight : orders[i].items[j].item_weight,
+                const indexItem = parcels[parcels.length-1].items.map(function(e) { return e.item_id; }).indexOf(orders[i].items[j].item_id);
+                if(indexItem>-1){
+                 parcels[parcels.length-1].items[indexItem].item_quantity ++
                 }
-                parcels[parcels.length-1].items.push(newItem)
+                else {
+                    const newItem = {
+                        item_id : orders[i].items[j].item_id,
+                        item_quantity : 1,
+                        item_weight : orders[i].items[j].item_weight,
+                    }
+                    parcels[parcels.length-1].items.push(newItem)
+                }
             }
             else{
                 // if not we create a new parcel
@@ -129,7 +136,8 @@ for (i = 0; i < orders.length; i++) {
                 parcels.push(new Parcel(orders[i].id, parcelNumber,paletteNumber,[], 0, null))
                 parcels[parcels.length-1].weight = orders[i].items[j].item_weight
                 const newItem = {
-                    item_id : orders[i].items[j].item_weight,
+                    item_id : orders[i].items[j].item_id,
+                    item_quantity : 1,
                     item_weight : orders[i].items[j].item_weight,
                 }
                 parcels[parcels.length-1].items.push(newItem)
